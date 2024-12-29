@@ -2,6 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const Listing=require("../Major Project/models/listing");
+const path=require("path");
+
+app.set("view engine","ejs");
+app.set("views",path.join(__dirname,"views"));
 
 const Mongo_url = "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -31,6 +35,11 @@ app.get("/testListing", async (req, res) => {
     res.send("added successfully!!");
 });
 
-app.listen(8080, () => {
+app.get("/listings",async (req,res)=>{
+    const allListings= await Listing.find({});
+    res.render("listings/index.ejs",{allListings});
+});
+
+app.listen(8081, () => {
     console.log("Server is listening on port 8080");
 });
