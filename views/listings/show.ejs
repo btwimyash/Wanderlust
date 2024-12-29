@@ -11,20 +11,21 @@
     <h2> All Details</h2>
     <ul>
         <li>
-            <%= data.title %>
+            <%= listing.title %>
         </li>
         <li>
-            <%= data.description %>
+            <%= listing.description %>
         </li>
-        <li> &#8377;<%= data.price.toLocaleString("en-IN"); %>
-        </li>
-        <li>
-            <%= data.location %>
+        <li> &#8377;<%= listing.price.toLocaleString("en-IN"); %>
         </li>
         <li>
-            <%= data.country %>
+            <%= listing.location %>
+        </li>
+        <li>
+            <%= listing.country %>
         </li>
     </ul>
+        <a href="/listings/<%=listing._id%>/edit">Edit this listing</a>
 </body>
 
 </html>

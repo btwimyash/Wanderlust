@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const app = express();
 const Listing=require("../Major Project/models/listing");
 const path=require("path");
+const methodOverride=require("method-override");
 
+app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
@@ -58,10 +60,22 @@ app.post("/listings",async(req,res)=>{
 //show route
 app.get("/listings/:id",async (req,res)=>{
     let {id}=req.params;
-    const data= await Listing.findById(id);
-    res.render("listings/show.ejs",{data});
+    const listing= await Listing.findById(id);
+    res.render("listings/show.ejs",{listing});
 });
 
+//edit route
+app.get("/listings/:id/edit",async (req,res)=>{
+    let {id}=req.params;
+    const listing= await Listing.findById(id);
+    res.render("listings/edit.ejs",{listing});
+});
+
+app.put("/listings/:id",async(req,res)=>{
+    let {id}=req.params;
+    await Listing.findByIdAndUpdate(id,{...req.body.Listings});
+    res.redirect(`/listings/${id}`);
+});
 
 app.listen(8081, () => {
     console.log("Server is listening on port 8081");
