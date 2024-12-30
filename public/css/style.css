@@ -88,8 +88,23 @@ card-text p{
     background-color: white;
 }
 
+/* Edit page */
 .add-btn,
 .edit-btn{
     background-color: #fe424d !important;
     border: none !important;
 }
+
+/* Show page  */
+.show-img{
+    height: 37vh;
+}
+
+.btns{
+    display: flex;
+}
+
+/* .show-card{
+    padding-left: 0;
+    padding-right: 0;
+} */
