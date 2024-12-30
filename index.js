@@ -52,7 +52,7 @@ app.get("/listings/new", (req, res) => {
     res.render("listings/new.ejs");
 });
 
-//create route
+//create routes
 app.post("/listings", async (req, res) => {
     const newListing = new Listing(req.body.Listings);
     // console.log(req.body.Listings);
