@@ -4,14 +4,14 @@ const app = express();
 const Listing = require("../Major Project/models/listing");
 const path = require("path");
 const methodOverride = require("method-override");
-const ejsMate=require("ejs-mate");
+const ejsMate = require("ejs-mate");
 
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.engine('ejs', ejsMate);
 app.set("views", path.join(__dirname, "views"));
-app.use(express.static(path.join(__dirname,"/public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 const Mongo_url = "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -53,11 +53,16 @@ app.get("/listings/new", (req, res) => {
 });
 
 //create routes
-app.post("/listings", async (req, res) => {
-    const newListing = new Listing(req.body.Listings);
-    // console.log(req.body.Listings);
-    await newListing.save();
-    res.redirect("/listings");
+app.post("/listings", async (req, res, next) => {
+    try {
+        const newListing = new Listing(req.body.Listings);
+        // console.log(req.body.Listings);
+        await newListing.save();
+        res.redirect("/listings");
+    } catch(err) {
+        console.error("Caught Error in Create Route:", err); 
+        next(err);
+    }
 });
 
 //show route
@@ -87,6 +92,11 @@ app.delete("/listings/:id", async (req, res) => {
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
     res.redirect(`/listings/`);
+});
+
+app.use((err, req, res, next) => {
+    res.send("Something went wrong!!");
+    next();
 });
 
 app.listen(8081, () => {

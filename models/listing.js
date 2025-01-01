@@ -16,7 +16,8 @@ const listingSchema = new Schema({
         }
     },
     price:{
-        type:Number
+        type:Number,
+        required: true
     },
     location: String,
     country: String
