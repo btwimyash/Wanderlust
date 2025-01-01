@@ -5,6 +5,7 @@ const Listing = require("../Major Project/models/listing");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+const wrapAsync=require("./utils/wrapAsync.js");
 
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
@@ -53,17 +54,17 @@ app.get("/listings/new", (req, res) => {
 });
 
 //create routes
-app.post("/listings", async (req, res, next) => {
-    try {
-        const newListing = new Listing(req.body.Listings);
-        // console.log(req.body.Listings);
-        await newListing.save();
-        res.redirect("/listings");
-    } catch(err) {
-        console.error("Caught Error in Create Route:", err); 
-        next(err);
-    }
-});
+app.post("/listings", wrapAsync(async (req, res, next) => {
+    
+    const newListing = new Listing(req.body.Listings);
+    // console.log(req.body.Listings);
+    await newListing.save();
+    res.redirect("/listings");
+
+    console.error("Caught Error in Create Route:", err); 
+    next(err);})
+    
+);
 
 //show route
 app.get("/listings/:id", async (req, res) => {
