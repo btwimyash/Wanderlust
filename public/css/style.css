@@ -24,6 +24,10 @@ body{
 }
 
 /* Footer */
+.footer {
+    margin-top: auto !important; /* This ensures the footer is pushed to the bottom */
+}
+
 .f-info-links a{
     text-decoration: none;
     color: #222;
