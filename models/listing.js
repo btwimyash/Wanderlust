@@ -19,12 +19,12 @@ const listingSchema = new Schema({
         type:Number,
         required: true
     },
-    location: String,
+    location: String, 
     country: String,
-    reviews:{
+    reviews:[{
         type:Schema.Types.ObjectId,
         ref:"Review",
-    }
+    }],
 });
 
 const Listing=mongoose.model("Listing",listingSchema);

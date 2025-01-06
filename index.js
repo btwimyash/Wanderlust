@@ -1,13 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const Listing = require("../Major Project/models/listing");
+const Listing = require("../Major Project/models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema } = require("./schema.js");
+const Review = require("../Major Project/models/review");
 
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
@@ -72,7 +73,7 @@ app.post("/listings", validateListing, wrapAsync(async (req, res, next) => {
     }
     const newListing = new Listing(req.body.Listings);
     await newListing.save();
-    res.redirect("/listings");
+    res.redirect("/listings");  
 }));
 
 //show route
@@ -107,6 +108,21 @@ app.delete("/listings/:id", wrapAsync(async (req, res) => {
     console.log(deletedListing);
     res.redirect(`/listings/`);
 }));
+
+//Reviews
+//post route
+app.post("/listings/:id/reviews", async (req,res)=>{
+    let listing= await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+
+    listing.reviews.push(newReview);
+
+    await newReview.save();
+    await listing.save();
+
+    console.log("new review saved");
+    res.send("review added successfully!!");
+});
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found!"));
