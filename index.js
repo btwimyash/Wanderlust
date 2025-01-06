@@ -33,13 +33,13 @@ app.get("/", (req, res) => {
 });
 
 const validateListing = (req, res, next) => {
+    console.log("Incoming request body:", req.body);
     let { error } = listingSchema.validate(req.body);
     if (error) {
-        let errMsg =error.details.map((el)=> el.message).join(",");
+        let errMsg = error.details.map((el) => el.message).join(", ");
         throw new ExpressError(400, error);
-    } else {
-        next();
-    }
+    } 
+    next();
 };
 
 app.get("/testListing", async (req, res) => {
@@ -66,12 +66,11 @@ app.get("/listings/new", (req, res) => {
 });
 
 //create routes
-app.post("/listings",validateListing, wrapAsync(async (req, res, next) => {
+app.post("/listings", validateListing, wrapAsync(async (req, res, next) => {
     if (!req.body.Listings) {
         throw new ExpressError(400, "Send valid data for listing");
     }
     const newListing = new Listing(req.body.Listings);
-    console.log(result);
     await newListing.save();
     res.redirect("/listings");
 }));
@@ -91,12 +90,13 @@ app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
 }));
 
 //update route
-app.put("/listings/:id",validateListing, wrapAsync(async (req, res) => {
+app.put("/listings/:id", validateListing, wrapAsync(async (req, res) => {
     if (!req.body.Listings) {
         throw new ExpressError(400, "Send valid data for listing");
     }
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.Listings });
+    console.log(req.body);
     res.redirect(`/listings/${id}`);
 }));
 
