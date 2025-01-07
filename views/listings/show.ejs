@@ -48,15 +48,6 @@
             </form>
 
             <hr>
-            <p><b>All Reviews</b></p>
-            <ul>
-                <%for(review of listing.reviews){%>
-                    <li>
-                        <%=review.comment %> , <%= review.rating%>stars
-                    </li>
-                    <%}%>
-            </ul>
-
             <div class="row">
                 <%for(review of listing.reviews){%>
                     <div class="card col-5 ms-3 mb-3">
@@ -65,7 +56,7 @@
                             <p class="card-text">
                                 <%=review.comment%>
                             </p>
-                            <p class="card-text">
+                            <p class="card-text mb-2">
                                 <%=review.rating%>stars
                             </p>
                         </div>
