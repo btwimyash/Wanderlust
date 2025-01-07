@@ -123,6 +123,7 @@ app.delete("/listings/:id", wrapAsync(async (req, res) => {
 //Reviews
 //post route
 app.post("/listings/:id/reviews",validateReview, wrapAsync(async (req,res)=>{
+    let { id } = req.params;
     let listing= await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
 
@@ -132,7 +133,7 @@ app.post("/listings/:id/reviews",validateReview, wrapAsync(async (req,res)=>{
     await listing.save();
 
     console.log("new review saved");
-    res.send("review added successfully!!");
+    res.redirect(`/listings/${id}`);
 }));
 
 app.all("*", (req, res, next) => {
