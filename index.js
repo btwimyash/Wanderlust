@@ -54,17 +54,17 @@ const validateReview = (req, res, next) => {
     next();
 };
 
-app.get("/testListing", async (req, res) => {
-    let listing1 = new Listing({
-        title: "My new Villa",
-        des: "By the Beach",
-        price: 2000,
-        location: "Goa",
-        Country: "India"
-    });
-    await listing1.save();
-    res.send("added successfully!!");
-});
+// app.get("/testListing", async (req, res) => {
+//     let listing1 = new Listing({
+//         title: "My new Villa",
+//         des: "By the Beach",
+//         price: 2000,
+//         location: "Goa",
+//         Country: "India"
+//     });
+//     await listing1.save();
+//     res.send("added successfully!!");
+// });
 
 //index route
 app.get("/listings", wrapAsync(async (req, res) => {
@@ -135,6 +135,14 @@ app.post("/listings/:id/reviews",validateReview, wrapAsync(async (req,res)=>{
     console.log("new review saved");
     res.redirect(`/listings/${id}`);
 }));
+
+//Delete review Route
+app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async (req,res)=>{
+    let {id,reviewId}=req.params;
+    await Review.findByIdAndDelete(reviewId);
+    await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+    res.redirect(`/listings/${id}`);
+}))
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found!"));
