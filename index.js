@@ -6,6 +6,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const flash = require("connect-flash");
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
@@ -29,6 +30,7 @@ const sessionOptions = {
 };
 
 app.use(session(sessionOptions));
+app.use(flash());
 
 const Mongo_url = "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -47,6 +49,12 @@ async function main() {
 app.get("/", (req, res) => {
   res.send("Hii! I am root!");
 });
+
+app.use((req,res,next)=>{
+    res.locals.success = req.flash("success");
+    next();
+});
+
 
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
