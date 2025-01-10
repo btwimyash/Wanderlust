@@ -6,16 +6,7 @@ const { listingSchema } = require("../schema.js");
 const { reviewSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
-
-const validateReview = (req, res, next) => {
-    console.log("Incoming request body:", req.body);
-    let { error } = reviewSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(", ");
-        throw new ExpressError(400, error);
-    } 
-    next();
-};
+const {validateReview} = require("../middleware.js");
 
 //post route
 router.post("/",validateReview, wrapAsync(async (req,res)=>{
