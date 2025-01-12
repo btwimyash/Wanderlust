@@ -14,6 +14,12 @@
             <textarea name="Listings[description]" class="form-control" required><%= listing.description %></textarea>
             <div class="invalid-feedback">Please Enter a short description</div>
         </div>
+
+        <div class="mb-3">
+            <p>Original Listing Image</p>
+            <img src="<%=originalImageUrl%>" alt="listing image" style="max-width: 30%; height: auto;" class="img-thumbnail">
+        </div>
+        
         <div class="mb-3">
             <label for="image" class="form-label">Upload New Image</label>
             <input type="file" name="Listings[image]" id="image" class="form-control">
@@ -35,7 +41,7 @@
             <input type="text" name="Listings[location]" value= "<%= listing.location %>" class="form-control" required>
             <div class="invalid-feedback">Please Enter Location</div>
         </div>
-        <button class="btn btn-dark edit-btn mt-3">Edit</button>
+        <button class="btn btn-dark edit-btn mt-3 mb-2">Edit</button>
     </form>
 </div>
 <script src="/js/script.js"></script>
