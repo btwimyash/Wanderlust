@@ -70,9 +70,9 @@ async function main() {
   mongoose.connect(Mongo_url);
 }
 
-app.get("/", (req, res) => {
-  res.send("Hii! I am root!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hii! I am root!");
+// });
 
 app.use((req,res,next)=>{
     res.locals.success = req.flash("success");
