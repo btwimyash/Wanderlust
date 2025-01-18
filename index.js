@@ -10,6 +10,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
 const localStrategy = require("passport-local");
@@ -26,7 +27,25 @@ app.engine("ejs", ejsMate);
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "/public")));
 
+
+// const Mongo_url = "mongodb://127.0.0.1:27017/wanderlust";
+const dburl = process.env.ATLASDB_URL;
+
+
+const store = MongoStore.create({
+  mongoUrl: dburl,
+  crypto: {
+    secret: 'mysupersecretcode'
+  },
+  touchAfter: 24*3600,
+});
+
+store.on("error",()=>{
+  console.log("ERROR in MONGO SESSION STORE",err);
+});
+
 const sessionOptions = {
+  store,
   secret: "mysupersecretcode",
   resave: false,
   saveUninitialized: true,
@@ -56,7 +75,6 @@ app.use("/demouser",async(req,res)=>{
   res.send(registeredUser);
 });
 
-const Mongo_url = "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
   .then(() => {
@@ -67,7 +85,7 @@ main()
   });
 
 async function main() {
-  mongoose.connect(Mongo_url);
+  mongoose.connect(dburl);
 }
 
 // app.get("/", (req, res) => {

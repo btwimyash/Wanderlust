@@ -12,5 +12,5 @@ console.log(coordinates);
 const marker = new mapboxgl.Marker({ color: "red" })
     .setLngLat(coordinates)
     .setPopup(new mapboxgl.Popup({ offset: 25 })
-        .setHTML(`<h4>${loc}</h4><p>Exact location will be provided after booking</p>`))
+        .setHTML(`<b><h5>${loc}</h5></b><p>Exact location will be provided after booking</p>`))
     .addTo(map);
